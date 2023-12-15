@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="newsData"
+            type="com.utsav.inshortnews.data.model.NewsData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:paddingStart="28dp">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivImage"
+            android:layout_width="116dp"
+            android:background="@color/black"
+            android:layout_height="95dp"
+            app:imageUrl="@{newsData.urlToImage}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/gray_color">
+
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="17dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/rubik_medium"
+            android:maxLines="2"
+            android:text="@{newsData.title}"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivImage"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            tools:text="Long Covid More Severe In Women Than Men, Suggests Study - Mint" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Read Neews"
+            android:textColor="@color/text_color_black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/view"
+
+            app:layout_constraintStart_toStartOf="@id/view" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="77dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="17dp"
+            android:background="@color/text_color_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

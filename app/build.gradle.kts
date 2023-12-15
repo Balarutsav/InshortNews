@@ -3,6 +3,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -35,10 +37,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
+
+
+
 }
 
 dependencies {
@@ -51,11 +55,10 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation( "com.android.support:multidex:1.0.3")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
-    annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     //Retrofit
     val retrofitVersion = "2.9.0"
@@ -66,11 +69,14 @@ dependencies {
     implementation("com.localebro:okhttpprofiler:1.0.8")
 
     // coroutine
-    val coroutineVersion = "1.7.1"
+    val coroutineVersion  = "1.4.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    //Lottie Animation
+    implementation("com.airbnb.android:lottie:6.1.0")
 
 
     //Navigation Component
