@@ -8,15 +8,35 @@
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.utsav.inshortnews.ui.newsList.NewsListFragment"
-        tools:layout="@layout/fragment_news_list"
-        android:label="NewsListFragment" >
+        android:label="NewsListFragment"
+        tools:layout="@layout/fragment_news_list">
         <action
             android:id="@+id/action_newsListFragment_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsDetailsFragment"
-        tools:layout="@layout/fragment_news_details"
         android:name="com.utsav.inshortnews.ui.newsDetails.NewsDetailsFragment"
-        android:label="NewsDetailsFragment" />
+        android:label="NewsDetailsFragment"
+        tools:layout="@layout/fragment_news_details">
+
+        <argument
+            android:name="newsData"
+            app:argType="com.utsav.inshortnews.data.model.NewsData" />
+        <argument
+            android:name="transitoinName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_fullNewsStoryFragment"
+            app:destination="@id/fullNewsStoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullNewsStoryFragment"
+        android:name="com.utsav.inshortnews.ui.newsStory.FullNewsStoryFragment"
+        android:label="FullNewsStoryFragment" >
+
+        <argument
+            android:name="webLink"
+            app:argType="string" />
+    </fragment>
 </navigation>

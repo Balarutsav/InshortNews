@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.transition.ChangeBounds
+import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.utsav.inshortnews.R
 
 
 abstract class BaseFragment<B : ViewDataBinding?> : Fragment() {
@@ -34,6 +37,10 @@ abstract class BaseFragment<B : ViewDataBinding?> : Fragment() {
     ): View {
         Log.e(TAG, "onCreateView: ")
         activity = requireActivity()
+        val animation = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+        sharedElementEnterTransition = animation
+
         if (binding == null) {
             binding = DataBindingUtil.inflate(
                 inflater, layoutResourceId, container, false
@@ -42,6 +49,7 @@ abstract class BaseFragment<B : ViewDataBinding?> : Fragment() {
         }
         return binding!!.root
     }
+
     protected fun navigateToDestination(destinationId: NavDirections) {
         findNavController().navigate(destinationId)
     }

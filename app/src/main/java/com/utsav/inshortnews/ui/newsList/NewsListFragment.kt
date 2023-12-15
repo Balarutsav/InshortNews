@@ -1,17 +1,19 @@
 package com.utsav.inshortnews.ui.newsList
 
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import com.utsav.inshortnews.R
 import com.utsav.inshortnews.data.model.NewsData
 import com.utsav.inshortnews.data.model.NewsTypeData
 import com.utsav.inshortnews.data.remote.ApiResources
 import com.utsav.inshortnews.databinding.FragmentNewsListBinding
 import com.utsav.inshortnews.ui.base.BaseFragment
-import com.utsav.inshortnews.utils.extension.hideLoader
+import com.utsav.inshortnews.utils.NewsType
 import com.utsav.inshortnews.utils.extension.showInternetDialog
-import com.utsav.inshortnews.utils.extension.showLoader
 import com.utsav.inshortnews.utils.extension.showMessageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,16 +24,16 @@ class NewsListFragment(override val layoutResourceId: Int = R.layout.fragment_ne
     BaseFragment<FragmentNewsListBinding>() {
     val viewModel: NewListViewModel by viewModels()
     override fun setupViews() {
-
+        viewModel.getNewsList(NewsType.Sports.fullName)
         binding?.apply {
             val newsTypeAdapter = NewsTypeAdapter { selectedNewsType ->
-
+                NewsType.getFullNameState(selectedNewsType.type)
+                    ?.let { viewModel.getNewsList(it) }
             }
             newsTypeAdapter.submitList(getListOfNewsType())
             rvType.adapter = newsTypeAdapter
         }
         addObserver()
-        viewModel.getHealthNews()
 
     }
 
@@ -40,11 +42,13 @@ class NewsListFragment(override val layoutResourceId: Int = R.layout.fragment_ne
             viewModel.stateNewsResponse.collect { state ->
                 when (state.status) {
                     ApiResources.Status.SUCCESS -> {
-                        hideLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.GONE
+                            rvNews.visibility=View.VISIBLE
 
+                        }
                         Log.e(TAG, "Response :  ${state.data}")
-
-                        state.data?.articles?.let { setNewsList(it) }
+                                                state.data?.articles?.let { setNewsList(it) }
 
                     }
 
@@ -56,28 +60,49 @@ class NewsListFragment(override val layoutResourceId: Int = R.layout.fragment_ne
                             ) { }
                         }
                         Log.e(TAG, "addObserver: error")
-                        hideLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.GONE
+                            rvNews.visibility=View.VISIBLE
+
+                        }
+
                     }
 
                     ApiResources.Status.LOADING -> {
                         Log.e(TAG, "addObserver: loading")
-                        showLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.VISIBLE
+                            rvNews.visibility=View.GONE
+
+                        }
                     }
 
                     ApiResources.Status.NO_INTERNET_CONNECTION -> {
                         Log.e(TAG, "addObserver: loading")
                         showInternetDialog()
-                        hideLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.GONE
+                            rvNews.visibility=View.VISIBLE
+
+                        }
                     }
 
                     ApiResources.Status.UNKNOWN -> {
                         Log.e(TAG, "addObserver: unknown")
-                        hideLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.GONE
+                            rvNews.visibility=View.VISIBLE
+
+                        }
                     }
 
                     ApiResources.Status.SHIMMER_EFFECT -> {
 
-                        hideLoader()
+                        binding?.run {
+                            shimmerLayout.visibility = View.GONE
+                            rvNews.visibility=View.VISIBLE
+
+                        }
                     }
                 }
             }
@@ -87,7 +112,20 @@ class NewsListFragment(override val layoutResourceId: Int = R.layout.fragment_ne
 
     private fun setNewsList(articles: List<NewsData>) {
 
-        val adapter = NewsAdapter {
+        val adapter = NewsAdapter { data, binding ->
+            run {
+
+                val transitionNameImage = binding.ivImage.transitionName
+                val extras = FragmentNavigatorExtras(
+                    binding.ivImage to transitionNameImage,
+                )
+                findNavController().navigate(
+                    NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(
+                        data, transitionNameImage
+                    ), navigatorExtras = extras
+                )
+
+            }
 
         }
         adapter.submitList(articles)
@@ -99,10 +137,9 @@ class NewsListFragment(override val layoutResourceId: Int = R.layout.fragment_ne
 
     fun getListOfNewsType(): List<NewsTypeData> {
         return mutableListOf<NewsTypeData>().apply {
-            add(NewsTypeData("All", R.drawable.document_text, true))
-            add(NewsTypeData("World", R.drawable.global))
-            add(NewsTypeData("StartUps", R.drawable.flash))
-            add(NewsTypeData("Tech", R.drawable.cpu_charge))
+            add(NewsTypeData(NewsType.Sports.name, R.drawable.ic_sports, true))
+            add(NewsTypeData(NewsType.Business.name, R.drawable.ic_business))
+            add(NewsTypeData(NewsType.Tech.name, R.drawable.cpu_charge))
         }
     }
 }

@@ -5,6 +5,6 @@ import com.utsav.inshortnews.data.remote.ApiResources
 
 interface InShortNewsRepository {
 
-    suspend fun getHealthNews(): ApiResources<NewsResponse>
+    suspend fun getNewsList(type : String): ApiResources<NewsResponse>
 
 }

@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.utsav.inshortnews.data.model.NewsData
 import com.utsav.inshortnews.databinding.ItemNewsBinding
+import kotlin.random.Random
 
-class NewsAdapter(private val onItemClick: (NewsData) -> Unit) :
+class NewsAdapter(private val onItemClick: (NewsData, ItemNewsBinding) -> Unit) :
     RecyclerView.Adapter<NewsAdapter.NewsTypeViewHolder>() {
 
     private var itemList = listOf<NewsData>()
@@ -17,9 +18,9 @@ class NewsAdapter(private val onItemClick: (NewsData) -> Unit) :
         fun bind(newsType: NewsData, position: Int) {
             binding.newsData = newsType
             binding.executePendingBindings()
-
-            itemView.setOnClickListener {
-                onItemClick(newsType)
+            binding.ivImage.transitionName = "Image${Random.nextInt()}"
+            binding.tvRead.setOnClickListener {
+                onItemClick(newsType, binding)
             }
         }
     }

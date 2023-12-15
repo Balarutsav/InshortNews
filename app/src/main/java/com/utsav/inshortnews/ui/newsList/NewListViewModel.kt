@@ -5,14 +5,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.utsav.inshortnews.R
 import com.utsav.inshortnews.data.model.NewsResponse
-import com.utsav.inshortnews.data.model.NewsTypeData
 import com.utsav.inshortnews.data.remote.ApiResources
 import com.utsav.inshortnews.data.repository.InShortNewsRepository
 import com.utsav.inshortnews.utils.extension.isNetworkConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,16 +36,8 @@ class NewListViewModel @Inject constructor(
 
     }
 
-    fun getListOfNewsType(): List<NewsTypeData> {
-        return mutableListOf<NewsTypeData>().apply {
-            add(NewsTypeData("All", R.drawable.document_text, true))
-            add(NewsTypeData("World", R.drawable.global))
-            add(NewsTypeData("StartUps", R.drawable.flash))
-            add(NewsTypeData("Tech", R.drawable.cpu_charge))
-        }
-    }
 
-    fun getHealthNews() {
+    fun getNewsList(type : String) {
 
 
         viewModelScope.launch {
@@ -58,7 +47,7 @@ class NewListViewModel @Inject constructor(
                 try {
                     mStateNewsResponse.value = ApiResources.loading()
 
-                    val response = repository.getHealthNews()
+                    val response = repository.getNewsList(type = type)
                     launch(Dispatchers.Main) {
 
                         mStateNewsResponse.value = response

@@ -10,8 +10,8 @@ import javax.inject.Inject
 class InShortNewsRepositoryImpl @Inject constructor(val api: InShortNewsApiService, private val baseDataSource: BaseDataSource,
 ) :
     InShortNewsRepository {
-    override suspend fun getHealthNews(): ApiResources<NewsResponse> {
-        val response = api.getHealthNews()
+    override suspend fun getNewsList(type : String): ApiResources<NewsResponse> {
+        val response = api.getNewsList(type = type)
         return baseDataSource.getResult { response }
     }
 

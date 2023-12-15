@@ -4,5 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text_color_black">#121212</color>
     <color name="gray_color">#616161</color>
+    <color name="shimmerColor">#C2C2C2</color>
 
 </resources>

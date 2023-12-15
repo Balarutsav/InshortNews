@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
+
 
 }
 
@@ -77,6 +79,7 @@ dependencies {
 
     //Lottie Animation
     implementation("com.airbnb.android:lottie:6.1.0")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
 
     //Navigation Component
